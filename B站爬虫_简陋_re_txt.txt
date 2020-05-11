@@ -1,24 +1,24 @@
-import re#ÒıÈëÕıÔò±í´ïÊ½
+import re#å¼•å…¥æ­£åˆ™è¡¨è¾¾å¼
 import requests
 
-def get_it(url):#»ñµÃÔ´´úÂëµÄº¯Êı
+def get_it(url):#è·å¾—æºä»£ç çš„å‡½æ•°
     try :
-        kv = {'user-agent':'Mozilla/5.0'}#ÇëÇóÍ·
-        r = requests.get(url , headers=kv)#»ñµÃÏìÓ¦
-        r.raise_for_status()#Èç¹û×´Ì¬²»ÊÇ200±¨´í
-        r.encoding = r.apparent_encoding#Ìæ»»±àÂë¸ñÊ½
-        return r.text#·µ»ØHTMLÎÄ±¾ĞÅÏ¢
+        kv = {'user-agent':'Mozilla/5.0'}#è¯·æ±‚å¤´
+        r = requests.get(url , headers=kv)#è·å¾—å“åº”
+        r.raise_for_status()#å¦‚æœçŠ¶æ€ä¸æ˜¯200æŠ¥é”™
+        r.encoding = r.apparent_encoding#æ›¿æ¢ç¼–ç æ ¼å¼
+        return r.text#è¿”å›HTMLæ–‡æœ¬ä¿¡æ¯
     except:
-        return  print("Òì³£")
+        return  print("å¼‚å¸¸")
 
-def alalysis_it(ilt,html):#½âÎöÔ´´úÂëµÄº¯Êı
+def alalysis_it(ilt,html):#è§£ææºä»£ç çš„å‡½æ•°
     titles = re.findall(r'<a title=\"(.*?)\"',html)
     links = re.findall(r'<li class="video-item matrix"><a href="//www.bilibili.com/video/(.*?)?from=search" ',html)
     up_names = re.findall(r'class="up-name">(.*?)</a>',html)
     watch_num = re.findall(r'<i class="icon-playtime"></i>(.*?)</span>', html, re.S)
     barrages = re.findall(r'<i class="icon-subtitle"></i>(.*?)</span>', html, re.S)
     time = re.findall(r'<i class="icon-date"></i>(.*?)</span>', html, re.S)
-    #Êı¾İÇåÏ´
+    #æ•°æ®æ¸…æ´—
     a = []
     b = []
     for i in range(len(titles)):
@@ -44,32 +44,32 @@ def alalysis_it(ilt,html):#½âÎöÔ´´úÂëµÄº¯Êı
         watch_nu = watch_num[i]
         barrage = barrages[i]
         tim = time[i]
-        ilt.append([title,link,up_name,watch_nu,barrage,tim])#½«Êı¾İÒÀ´Î¼ÓÈëÁĞ±í
+        ilt.append([title,link,up_name,watch_nu,barrage,tim])#å°†æ•°æ®ä¾æ¬¡åŠ å…¥åˆ—è¡¨
     return ilt
 
-def printit(ilt):#´òÓ¡½âÎöºóµÄÊı¾İ
+def printit(ilt):#æ‰“å°è§£æåçš„æ•°æ®
     tplt = "{:4}\t{:10}\t{:20}\t{:10}\t{:4}\t{:4}\t{:10}"
     count=0
     for g in ilt:
-        count = count + 1#¼ÆÊıÆ÷
+        count = count + 1#è®¡æ•°å™¨
         print(tplt.format(count,g[0],"www.bilibili.com/video/" +g[1]+ "from=search",g[2],g[3],g[4],g[5],chr(12288)))
 
-def saveist(ilt):#½«½âÎöºóµÄÊı¾İ±£´æµ½±¾µØÓÃTXT¸ñÊ½
-    with open("D://BÕ¾ËÑË÷.txt", "a", encoding='utf-8') as f:
-        f.write("ÊÓÆµ±êÌâ"+"\t"+"ÊÓÆµAVºÅ"+"\t"+ "upÖ÷"+"\t"+ "\t" + "²¥·ÅÁ¿"+"\t"+ "µ¯Ä»Á¿"+"\t"+ "ÉÏ´«Ê±¼ä"+"\t"+"\n")
+def saveist(ilt):#å°†è§£æåçš„æ•°æ®ä¿å­˜åˆ°æœ¬åœ°ç”¨TXTæ ¼å¼
+    with open("D://Bç«™æœç´¢.txt", "a", encoding='utf-8') as f:
+        f.write("è§†é¢‘æ ‡é¢˜"+"\t"+"è§†é¢‘AVå·"+"\t"+ "upä¸»"+"\t"+ "\t" + "æ’­æ”¾é‡"+"\t"+ "å¼¹å¹•é‡"+"\t"+ "ä¸Šä¼ æ—¶é—´"+"\t"+"\n")
         for i in ilt:
             for j in i:
                 f.write(j +"\t")
             f.write("\n")
         f.close()
 
-def main():#Ö÷º¯Êı
+def main():#ä¸»å‡½æ•°
     tplt = "{:4}\t{:10}\t{:20}\t{:10}\t{:4}\t{:4}\t{:10}"
 
     ilt = []
-    kw = input("ÇëÊäÈëÄãµÄËÑË÷£º")
+    kw = input("è¯·è¾“å…¥ä½ çš„æœç´¢ï¼š")
     depth = 50
-    print(tplt.format("ÊÓÆµ±àºÅ", "ÊÓÆµ±êÌâ", "ÊÓÆÁÁ´½Ó", "upÖ÷",  "²¥·ÅÁ¿", "µ¯Ä»Á¿", "ÉÏ´«Ê±¼ä"))
+    print(tplt.format("è§†é¢‘ç¼–å·", "è§†é¢‘æ ‡é¢˜", "è§†å±é“¾æ¥", "upä¸»",  "æ’­æ”¾é‡", "å¼¹å¹•é‡", "ä¸Šä¼ æ—¶é—´"))
     start_url = "https://search.bilibili.com/all?keyword=" + str(kw) + "&from_source=nav_search_new&page="
     for i in range(depth):
         url = start_url + str(i+1)
@@ -78,4 +78,4 @@ def main():#Ö÷º¯Êı
     printit(ilt)
     saveist(ilt)
 
-main()#Ó¦ÓÃÖ÷º¯Êı
+main()#åº”ç”¨ä¸»å‡½æ•°
